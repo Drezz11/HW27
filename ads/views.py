@@ -34,19 +34,9 @@ class AdDetailView(DetailView):
                              "description": ad.description,
                              "address": ad.address,
                              "is_published": ad.is_published
-                             })
+                             }, safe=False)
 
-    def post(self, request):
-        ad_data = json.loads(request.body)
-        new_ad = Ad.objects.create(**ad_data)
-        return JsonResponse({"id": new_ad.pk,
-                             "name": new_ad.name,
-                             "author": new_ad.author,
-                             "price": new_ad.price,
-                             "description": new_ad.description,
-                             "address": new_ad.address,
-                             "is_published": new_ad.is_published
-                             })
+
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -61,6 +51,17 @@ class AdListCreateView(View):
                              "address": ad.address,
                              "is_published": ad.is_published
                              } for ad in ad_list])
+    def post(self, request):
+        ad_data = json.loads(request.body)
+        new_ad = Ad.objects.create(**ad_data)
+        return JsonResponse({"id": new_ad.pk,
+                             "name": new_ad.name,
+                             "author": new_ad.author,
+                             "price": new_ad.price,
+                             "description": new_ad.description,
+                             "address": new_ad.address,
+                             "is_published": new_ad.is_published
+                             })
 
 @method_decorator(csrf_exempt, name='dispatch')
 class CatListCreateView(View):
