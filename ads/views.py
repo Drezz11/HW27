@@ -19,7 +19,7 @@ class CategoryDerailView(DetailView):
 
     def get(self, request, *args, **kwargs):
         category = self.get_object()
-        return JsonResponse({"id": category.pk, "name": category.name})
+        return JsonResponse({"id": category.pk, "name": category.name}, safe=False)
 
 
 class AdDetailView(DetailView):
@@ -50,7 +50,7 @@ class AdListCreateView(View):
                              "description": ad.description,
                              "address": ad.address,
                              "is_published": ad.is_published
-                             } for ad in ad_list])
+                             } for ad in ad_list], safe=False)
     def post(self, request):
         ad_data = json.loads(request.body)
         new_ad = Ad.objects.create(**ad_data)
@@ -69,7 +69,7 @@ class CatListCreateView(View):
         cat_list = Ad.objects.all()
         return JsonResponse([{"id": cat.pk,
                              "name": cat.name,
-                             } for cat in cat_list])
+                             } for cat in cat_list], safe=False)
 
     def post(self, request):
         ad_data = json.loads(request.body)
